@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}მანქანის დამატება - Car Rental{% endblock title %}
+
+{% block content %}
+<div class="auth-card">
+    <h2>ახალი მანქანის დამატება</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">დამატება</button>
+    </form>
+
+    <div class="switch-auth">
+        <a href="{% url 'cars:list-cars' %}">გაუქმება</a>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ car.brand }} {{ car.model }} - Car Rental{% endblock title %}
+
+{% block content %}
+<div class="auth-card detail-card">
+    <h2>{{ car.brand }} {{ car.model }}</h2>
+    <p class="subtitle">გამოშვების წელი: {{ car.year }}</p>
+
+    <div class="specs-block">
+        <p><strong>ფასი დღეში:</strong> <span class="car-price">{{ car.price_per_day }} ₾</span></p>
+        <p><strong>კარების რაოდენობა:</strong> {{ car.doors }}</p>
+        <p><strong>ტრანსმისია:</strong> {{ car.transmission }}</p>
+        <p><strong>საწვავის ტიპი:</strong> {{ car.fuel_type }}</p>
+        <p><strong>მფლობელი:</strong> {{ car.owner.username }}</p>
+        {% if car.description %}
+            <p class="description-text"><strong>აღწერა:</strong><br>{{ car.description }}</p>
+        {% endif %}
+    </div>
+
+    {% if user == car.owner %}
+        <div class="action-buttons">
+            <a href="{% url 'cars:car-update' car.pk %}" class="btn-action btn-edit">რედაქტირება</a>
+            <a href="{% url 'cars:car-delete' car.pk %}" class="btn-action btn-delete">წაშლა</a>
+        </div>
+    {% endif %}
+
+    <div class="switch-auth">
+        <a href="{% url 'cars:list-cars' %}">&larr; სიასთან დაბრუნება</a>
+    </div>
+</div>
+{% endblock content %}

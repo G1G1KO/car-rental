@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}მანქანის წაშლა - Car Rental{% endblock title %}
+
+{% block content %}
+<div class="auth-card delete-card">
+    <h2 class="text-danger">მანქანის წაშლა</h2>
+    <p class="confirm-text">
+        დარწმუნებული ხარ, რომ გინდა წაშალო <strong>{{ car.brand }} {{ car.model }}</strong>?
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn-delete">დიახ, წაშალე</button>
+    </form>
+
+    <div class="switch-auth mt-1">
+        <a href="{% url 'cars:car-detail' car.pk %}">არა, გაუქმება</a>
+    </div>
+</div>
+{% endblock content %}

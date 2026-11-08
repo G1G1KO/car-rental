@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Car Rental{% endblock title %}
+
+{% block content %}
+<div class="auth-card">
+    <h2>ავტორიზაცია (Login)</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">შესვლა</button>
+    </form>
+
+    <p class="switch-auth">არ გაქვს ანგარიში? <a href="{% url 'accounts:register' %}">დარეგისტრირდი</a></p>
+</div>
+{% endblock content %}

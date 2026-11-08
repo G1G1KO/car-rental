@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Car Rental{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#">Car Rental</a> |
+        {% if user.is_authenticated %}
+            <span>გამარჯობა, {{ user.username }}!</span> |
+            <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'accounts:login' %}">Login</a> |
+            <a href="{% url 'accounts:register' %}">Register</a>
+        {% endif %}
+    </nav>
+    <hr>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p style="color: green;">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <hr>
+        <p>&copy; {% now "Y" %} Car Rental. ყველა უფლება დაცულია.</p>
+    </footer>
+
+</body>
+</html>

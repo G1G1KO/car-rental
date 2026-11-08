@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}მანქანების სია - Car Rental{% endblock title %}
+
+{% block content %}
+<div class="cars-container">
+    <div class="cars-header">
+        <h2>ხელმისაწვდომი მანქანები</h2>
+        <a href="{% url 'cars:car-create' %}" class="btn-primary">+ მანქანის დამატება</a>
+    </div>
+
+    {% if cars %}
+        <div class="cars-grid">
+            {% for car in cars %}
+                <div class="auth-card car-card">
+                    <h3>{{ car.brand }} {{ car.model }} ({{ car.year }})</h3>
+                    <p class="car-price">{{ car.price_per_day }} ₾ / დღე</p>
+                    <p class="car-specs">ტრანსმისია: {{ car.transmission }} | საწვავი: {{ car.fuel_type }}</p>
+                    
+                    <div class="car-card-action">
+                        <a href="{% url 'cars:car-detail' car.pk %}" class="link-detail">დეტალურად &rarr;</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-message">ამ ეტაპზე თავისუფალი მანქანები არ არის.</p>
+    {% endif %}
+</div>
+{% endblock content %}
