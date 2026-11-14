@@ -1,14 +1,27 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.contrib import messages
 from django.shortcuts import redirect
 
-
+from cars.models import Car, Rental
 
 
 # Create your views here.
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['my_cars'] = Car.objects.filter(owner=user).order_by('-created_at')
+        context['liked_cars'] = Car.objects.filter(likes=user)
+        context['rentals'] = Rental.objects.filter(renter=user, is_active=True).order_by('-start_date')
+        return context
+
 
 class RegisterPage(FormView):
     template_name = 'accounts/register.html'

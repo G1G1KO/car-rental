@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}WeRent - მთავარი{% endblock title %}
+
+{% block content %}
+<div class="cars-container">
+
+    <section class="promo-grid">
+        <div class="promo-card promo-left">
+            <div class="promo-content">
+                <h2>საუკეთესო პლატფორმა მანქანის საქირავებლად.</h2>
+                <p>მანქანის ქირაობა ასეთი ადვილი არასდროს ყოფილა. შეარჩიე სასურველი მოდელი საუკეთესო ფასად.</p>
+            </div>
+            <a href="{% url 'cars:list-cars' %}" class="btn-banner-dark">იქირავე</a>
+        </div>
+
+        <div class="promo-card promo-right">
+            <div class="promo-content">
+                <h2>მანქანის გაქირავება ასეთი ადვილი არასდროს ყოფილა</h2>
+                <p>განათავსე შენი ავტომობილი სასურველ ფასში და მიიღე შემოსავალი მარტივად.</p>
+            </div>
+            {% if user.is_authenticated %}
+                <a href="{% url 'cars:car-create' %}" class="btn-banner-light">გააქირავე</a>
+            {% else %}
+                <a href="{% url 'accounts:register' %}" class="btn-banner-light">გააქირავე</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="cars-section">
+        <div class="section-header">
+            <span class="section-title">პოპულარული მანქანები</span>
+            <a href="{% url 'cars:list-cars' %}" class="view-all-link">ყველას ნახვა</a>
+        </div>
+
+        {% if top_cars %}
+            <div class="cars-grid">
+                {% for car in top_cars %}
+                    <div class="werent-card">
+                        <div class="card-top">
+                            <div>
+                                <div class="card-brand">{{ car.brand }}</div>
+                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის 📍{{ car.get_city_display }}</div>
+                            </div>
+                            {% if user.is_authenticated %}
+                                <form method="POST" action="{% url 'cars:car-like' car.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">♥</button>
+                                </form>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">♥</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-specs">
+                            <span class="spec-item">⛽ {{ car.fuel_type }}</span>
+                            <span class="spec-item">⚙️ {{ car.transmission }}</span>
+                            <span class="spec-item">🚪 {{ car.doors }} კარი</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <div class="price-box">{{ car.price_per_day }} ₾ / <span>დღე</span></div>
+                            <a href="{% url 'cars:car-detail' car.pk %}" class="btn-primary">იქირავე</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">პოპულარული მანქანები ჯერ არ არის.</p>
+        {% endif %}
+    </section>
+
+    <section class="cars-section">
+        <div class="section-header">
+            <span class="section-title">ახალი დამატებული მანქანები</span>
+            <a href="{% url 'cars:list-cars' %}" class="view-all-link">ყველას ნახვა</a>
+        </div>
+
+        {% if latest_cars %}
+            <div class="cars-grid">
+                {% for car in latest_cars %}
+                    <div class="werent-card">
+                        <div class="card-top">
+                            <div>
+                                <div class="card-brand">{{ car.brand }}</div>
+                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის 📍{{ car.get_city_display }}</div>
+                            </div>
+                            {% if user.is_authenticated %}
+                                <form method="POST" action="{% url 'cars:car-like' car.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">♥</button>
+                                </form>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">♥</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-specs">
+                            <span class="spec-item">⛽ {{ car.fuel_type }}</span>
+                            <span class="spec-item">⚙️ {{ car.transmission }}</span>
+                            <span class="spec-item">🚪 {{ car.doors }} კარი</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <div class="price-box">{{ car.price_per_day }} ₾ / <span>დღე</span></div>
+                            <a href="{% url 'cars:car-detail' car.pk %}" class="btn-primary">იქირავე</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">ახალი მანქანები ჯერ არ არის.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock content %}

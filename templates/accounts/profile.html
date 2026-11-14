@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}პროფილი - {{ user.username }} | WeRent{% endblock title %}
+
+{% block content %}
+<div class="cars-container">
+
+    <div class="profile-header-card">
+        <div class="profile-info">
+            <h2>{{ user.get_full_name|default:user.username }}</h2>
+            <div class="profile-username">@{{ user.username }}</div>
+            <div class="profile-meta">
+                <span>📧 {{ user.email|default:"ელ-ფოსტა არ არის მითითებული" }}</span>
+                <span>🚗 დაქირავებული: {{ rentals|length }}</span>
+                <span>📋 განცხადებები: {{ my_cars|length }}</span>
+                <span>♥ მოწონებული: {{ liked_cars|length }}</span>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'cars:car-create' %}" class="btn-primary">+ მანქანის დამატება</a>
+        </div>
+    </div>
+
+    <section class="cars-section">
+        <div class="section-header">
+            <span class="section-title">ჩემი დაქირავებული ავტომობილები ({{ rentals|length }})</span>
+        </div>
+
+        {% if rentals %}
+            <div class="cars-grid">
+                {% for rental in rentals %}
+                    <div class="werent-card">
+                        <div>
+                            <div class="card-top">
+                                <div>
+                                    <div class="card-brand">{{ rental.car.brand }}</div>
+                                    <div class="card-subtitle">{{ rental.car.model }} / {{ rental.car.year }} • 📍 {{ rental.car.get_city_display }}</div>
+                                </div>
+                            </div>
+
+                            <div class="card-specs" style="flex-direction: column; gap: 6px;">
+                                <span>⏳ ხანგრძლივობა: <strong>{{ rental.days }} დღე</strong></span>
+                                <span>📅 დაწყება: <strong>{{ rental.start_date|date:"d M Y, H:i" }}</strong></span>
+                                <span>🏁 დასრულება: <strong>{{ rental.end_date|date:"d M Y, H:i" }}</strong></span>
+                                <span>⏱ დარჩენილია: <strong>{{ rental.end_date|timeuntil }}</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="card-bottom">
+                            <div class="price-box">
+                                {{ rental.total_price }} ₾ <span>/ სულ</span>
+                            </div>
+                            <a href="{% url 'cars:car-detail' rental.car.pk %}" class="btn-primary">ნახვა</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">ამჟამად დაქირავებული ავტომობილი არ გყავთ.</p>
+        {% endif %}
+    </section>
+
+    <section class="cars-section">
+        <div class="section-header">
+            <span class="section-title">ჩემი განცხადებები ({{ my_cars|length }})</span>
+        </div>
+
+        {% if my_cars %}
+            <div class="cars-grid">
+                {% for car in my_cars %}
+                    <div class="werent-card">
+                        <div>
+                            <div class="card-top">
+                                <div>
+                                    <div class="card-brand">{{ car.brand }}</div>
+                                    <div class="card-subtitle">{{ car.model }} / {{ car.year }} • 📍 {{ car.get_city_display }}</div>
+                                </div>
+                                <span class="card-subtitle">
+                                    {% if car.is_available %}✅ თავისუფალია{% else %}⛔ გაქირავებულია{% endif %}
+                                </span>
+                            </div>
+
+                            <div class="card-specs">
+                                <span>⛽ {{ car.get_fuel_type_display }}</span>
+                                <span>⚙️ {{ car.get_transmission_display }}</span>
+                                <span>🚪 {{ car.doors }}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-bottom">
+                            <div class="price-box">
+                                {{ car.price_per_day }} ₾ <span>/ დღე</span>
+                            </div>
+                            <a href="{% url 'cars:car-detail' car.pk %}" class="btn-primary">დეტალები</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">თქვენ ჯერ არ დაგიმატებიათ ავტომობილი.</p>
+        {% endif %}
+    </section>
+
+    <section class="cars-section">
+        <div class="section-header">
+            <span class="section-title">მოწონებული ავტომობილები ({{ liked_cars|length }})</span>
+        </div>
+
+        {% if liked_cars %}
+            <div class="cars-grid">
+                {% for car in liked_cars %}
+                    <div class="werent-card">
+                        <div>
+                            <div class="card-top">
+                                <div>
+                                    <div class="card-brand">{{ car.brand }}</div>
+                                    <div class="card-subtitle">{{ car.model }} / {{ car.year }} • 📍 {{ car.get_city_display }}</div>
+                                </div>
+                                <form method="POST" action="{% url 'cars:car-like' car.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="heart-btn liked" title="მოწონების გაუქმება">♥</button>
+                                </form>
+                            </div>
+
+                            <div class="card-specs">
+                                <span>⛽ {{ car.get_fuel_type_display }}</span>
+                                <span>⚙️ {{ car.get_transmission_display }}</span>
+                                <span>🚪 {{ car.doors }}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-bottom">
+                            <div class="price-box">
+                                {{ car.price_per_day }} ₾ <span>/ დღე</span>
+                            </div>
+                            <a href="{% url 'cars:car-detail' car.pk %}" class="btn-primary">ნახვა</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">მოწონებული ავტომობილების სია ცარიელია.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock content %}

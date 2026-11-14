@@ -1,32 +1,99 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ car.brand }} {{ car.model }} - Car Rental{% endblock title %}
+{% block title %}{{ car.brand }} {{ car.model }} - WeRent{% endblock title %}
 
 {% block content %}
-<div class="auth-card detail-card">
-    <h2>{{ car.brand }} {{ car.model }}</h2>
-    <p class="subtitle">გამოშვების წელი: {{ car.year }}</p>
+<div class="detail-wrapper">
+    <div class="detail-box">
 
-    <div class="specs-block">
-        <p><strong>ფასი დღეში:</strong> <span class="car-price">{{ car.price_per_day }} ₾</span></p>
-        <p><strong>კარების რაოდენობა:</strong> {{ car.doors }}</p>
-        <p><strong>ტრანსმისია:</strong> {{ car.transmission }}</p>
-        <p><strong>საწვავის ტიპი:</strong> {{ car.fuel_type }}</p>
-        <p><strong>მფლობელი:</strong> {{ car.owner.username }}</p>
-        {% if car.description %}
-            <p class="description-text"><strong>აღწერა:</strong><br>{{ car.description }}</p>
-        {% endif %}
-    </div>
+        <div class="detail-header">
+            <div>
+                <h1 class="detail-title">{{ car.brand }} {{ car.model }}</h1>
+                <p class="detail-year">{{ car.year }} წელი • 📍 {{ car.get_city_display }} • მფლობელი: {{ car.owner.username }}</p>
+            </div>
 
-    {% if user == car.owner %}
-        <div class="action-buttons">
-            <a href="{% url 'cars:car-update' car.pk %}" class="btn-action btn-edit">რედაქტირება</a>
-            <a href="{% url 'cars:car-delete' car.pk %}" class="btn-action btn-delete">წაშლა</a>
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div class="detail-price-tag">
+                    {{ car.price_per_day }} ₾ <span>/ დღე</span>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <form method="POST" action="{% url 'cars:car-like' car.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">
+                            ♥ {{ car.likes.count }}
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">
+                        ♥ {{ car.likes.count }}
+                    </a>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
 
-    <div class="switch-auth">
-        <a href="{% url 'cars:list-cars' %}">&larr; სიასთან დაბრუნება</a>
+        <div class="detail-specs-grid">
+            <div class="detail-spec-item">
+                <span class="spec-label">საწვავი</span>
+                <span class="spec-value">⛽ {{ car.get_fuel_type_display }}</span>
+            </div>
+            <div class="detail-spec-item">
+                <span class="spec-label">გადაცემათა კოლოფი</span>
+                <span class="spec-value">⚙️ {{ car.get_transmission_display }}</span>
+            </div>
+            <div class="detail-spec-item">
+                <span class="spec-label">კარების რაოდენობა</span>
+                <span class="spec-value">🚪 {{ car.doors }} კარი</span>
+            </div>
+            <div class="detail-spec-item">
+                <span class="spec-label">სტატუსი</span>
+                <span class="spec-value">
+                    {% if car.is_available %}
+                        ✅ თავისუფალია
+                    {% else %}
+                        ⛔ დაკავებულია
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        {% if car.description %}
+            <div class="detail-description">
+                <h4>აღწერა</h4>
+                <p>{{ car.description }}</p>
+            </div>
+        {% endif %}
+
+        <div class="detail-footer">
+            {% if user.is_authenticated %}
+                {% if car.owner == user %}
+                    <p class="detail-year" style="margin-bottom: 12px;">ეს თქვენი განცხადებაა:</p>
+                    <div class="action-buttons">
+                        <a href="{% url 'cars:car-update' car.pk %}" class="btn-action btn-edit">რედაქტირება</a>
+                        <a href="{% url 'cars:car-delete' car.pk %}" class="btn-action btn-delete">წაშლა</a>
+                    </div>
+                {% elif car.is_available %}
+                    <form method="POST" action="{% url 'cars:car-rent' car.pk %}" class="filter-form" style="margin-bottom: 12px;">
+                        {% csrf_token %}
+                        <div class="filter-group">
+                            <label for="days">რამდენი დღით გსურთ ქირაობა?</label>
+                            <input type="number" id="days" name="days" value="1" min="1" max="365" required>
+                        </div>
+                        <button type="submit" class="btn-primary">იქირავე ახლავე ({{ car.price_per_day }} ₾ / დღე)</button>
+                    </form>
+                {% else %}
+                    <div class="delete-warning-box" style="margin-bottom: 12px;">
+                        ეს ავტომობილი ამჟამად დაქირავებულია.
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="detail-year" style="margin-bottom: 12px;">მანქანის დასაჯავშნად გთხოვთ გაიაროთ ავტორიზაცია.</p>
+                <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn-primary">შედით სისტემაში</a>
+            {% endif %}
+
+            <a href="{% url 'cars:list-cars' %}" class="back-link">← ყველა ავტომობილზე დაბრუნება</a>
+        </div>
+
     </div>
 </div>
 {% endblock content %}

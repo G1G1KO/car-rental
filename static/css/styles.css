@@ -1,334 +1,529 @@
-/* 1. Global Reset & Base Styles */
+/* 1. საბაზისო პარამეტრები */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    background-color: #f4f6f9;
-    color: #333;
+    background-color: #f6f7f9;
+    color: #1a202c;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* 2. Navigation Bar */
+/* 2. ნავიგაციის პანელი */
 nav {
-    background-color: #1e293b;
-    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left, .nav-right {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    gap: 24px;
+}
+
+.nav-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3563e9 !important;
+    text-decoration: none;
 }
 
 nav a {
-    color: #cbd5e1;
+    color: #596780;
     text-decoration: none;
-    font-weight: 500;
-    margin-right: 1.2rem;
-    transition: color 0.2s ease;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 nav a:hover {
-    color: #ffffff;
+    color: #3563e9;
 }
 
-nav span {
-    color: #38bdf8;
-    font-weight: 600;
-    margin-right: 1rem;
+.user-badge {
+    background-color: #f6f7f9;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
-nav button {
+/* ღილაკები */
+.btn-primary {
+    background-color: #3563e9;
+    color: #ffffff !important;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: #264bc8;
+}
+
+.btn-logout {
     background-color: #ef4444;
     color: #ffffff;
+    padding: 8px 14px;
     border: none;
-    padding: 0.4rem 0.9rem;
     border-radius: 6px;
-    font-weight: 500;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 
-nav button:hover {
-    background-color: #dc2626;
+/* 3. მთავარი კონტეინერი */
+main {
+    flex: 1;
+    padding: 30px 40px;
 }
 
-/* 3. Messages Alert */
+.cars-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
 .messages {
-    max-width: 420px;
-    margin: 1.5rem auto 0;
-    padding: 0 1rem;
+    max-width: 500px;
+    margin: 15px auto 0;
 }
 
 .messages p {
     background-color: #dcfce7;
     color: #15803d;
     border: 1px solid #bbf7d0;
-    padding: 0.75rem 1rem;
+    padding: 12px;
     border-radius: 8px;
-    font-size: 0.95rem;
     text-align: center;
 }
 
-/* 4. Main Content Area & Auth Cards */
-main {
-    flex: 1;
+/* 4. ორი მთავარი ბანერი (WERENT სტილში) */
+.promo-grid {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
+    gap: 24px;
+    margin-bottom: 40px;
 }
 
-/* Auth Card Layout (Login / Register) */
-.auth-card {
-    background: #ffffff;
-    width: 100%;
-    max-width: 420px;
-    padding: 2.5rem;
+.promo-card {
+    flex: 1;
+    padding: 32px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 240px;
 }
 
-.auth-card h2 {
-    font-size: 1.6rem;
-    color: #0f172a;
-    margin-bottom: 1.5rem;
+.promo-left {
+    background-color: #54a6ff;
+}
+
+.promo-right {
+    background-color: #3563e9;
+}
+
+.promo-card h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.promo-card p {
+    font-size: 15px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+    color: #f1f5f9;
+}
+
+.btn-banner-dark {
+    background-color: #3563e9;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-banner-light {
+    background-color: #54a6ff;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* 5. სექციები და მანქანის ბარათები */
+.cars-section {
+    margin-bottom: 45px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #596780;
+}
+
+.view-all-link {
+    color: #3563e9;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.werent-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.card-brand {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.card-subtitle {
+    font-size: 13px;
+    color: #90a3bf;
+    font-weight: bold;
+}
+
+.heart-icon {
+    font-size: 20px;
+    color: #90a3bf;
+}
+
+.heart-icon.liked {
+    color: #ed3f3f;
+}
+
+.card-specs {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    margin-bottom: 16px;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+    color: #596780;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-box {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a202c;
+}
+
+.price-box span {
+    font-size: 13px;
+    color: #90a3bf;
+    font-weight: normal;
+}
+
+.empty-message {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 30px;
+    border-radius: 10px;
     text-align: center;
+    color: #596780;
 }
 
-/* Django Form Inputs (form.as_p) */
+/* 6. ავტორიზაცია, ფორმები და წითელი ვალიდაციები */
+.auth-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    max-width: 440px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.form-card-wide {
+    max-width: 560px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.auth-header h2 {
+    margin-bottom: 6px;
+    color: #1a202c;
+}
+
+.auth-subtitle {
+    font-size: 14px;
+    color: #90a3bf;
+}
+
 .auth-card form p {
-    margin-bottom: 1.25rem;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
 }
 
 .auth-card form label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 0.4rem;
+    font-weight: bold;
+    font-size: 14px;
+    color: #1a202c;
+    margin-bottom: 6px;
 }
 
-.auth-card form input[type="text"],
-.auth-card form input[type="password"],
-.auth-card form input[type="email"] {
-    width: 100%;
-    padding: 0.75rem;
+.auth-card form input,
+.auth-card form select,
+.auth-card form textarea {
+    padding: 11px 14px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 14px;
+    background-color: #f8fafc;
+}
+
+.auth-card form input:focus,
+.auth-card form select:focus,
+.auth-card form textarea:focus {
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    border-color: #3563e9;
+    background-color: #ffffff;
 }
 
-.auth-card form input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+.helptext,
+.auth-card form ul:not(.errorlist) {
+    display: none;
 }
 
-/* Django Form Help Text & Errors */
-.auth-card form .helptext {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin-top: 0.3rem;
-    line-height: 1.3;
-}
-
-.auth-card form ul.errorlist {
+.errorlist {
     list-style: none;
-    margin-bottom: 0.5rem;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background-color: #fef2f2;
+    border-left: 3px solid #ef4444;
+    border-radius: 4px;
 }
 
-.auth-card form ul.errorlist li {
+.errorlist li {
     color: #dc2626;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 600;
 }
 
-/* Submit Button */
-.auth-card form button[type="submit"] {
+.btn-submit {
     width: 100%;
-    background-color: #2563eb;
+    background-color: #3563e9;
     color: #ffffff;
-    padding: 0.8rem;
+    padding: 12px;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: bold;
     cursor: pointer;
-    margin-top: 0.5rem;
-    transition: background-color 0.2s ease;
+    margin-top: 8px;
 }
 
-.auth-card form button[type="submit"]:hover {
-    background-color: #1d4ed8;
+.btn-submit:hover {
+    background-color: #264bc8;
 }
 
-/* Redirect Links */
-.auth-card .switch-auth {
-    margin-top: 1.5rem;
+.switch-auth {
+    margin-top: 16px;
     text-align: center;
-    font-size: 0.9rem;
-    color: #64748b;
+    font-size: 14px;
 }
 
-.auth-card .switch-auth a {
-    color: #2563eb;
+.switch-auth a {
+    color: #3563e9;
+    font-weight: bold;
     text-decoration: none;
-    font-weight: 600;
 }
 
-.auth-card .switch-auth a:hover {
-    text-decoration: underline;
-}
-
-/* 5. Footer */
-footer {
-    background-color: #ffffff;
-    border-top: 1px solid #e2e8f0;
-    text-align: center;
-    padding: 1.25rem;
-    color: #64748b;
-    font-size: 0.875rem;
-}
-
-
-
-
-
-
-
-/* 6. Cars Application Layout & Cards */
-.cars-container {
-    max-width: 1000px;
-    margin: 0 auto;
+/* 7. დეტალური გვერდის (detail_car.html) სტილები */
+.detail-wrapper {
+    max-width: 720px;
     width: 100%;
+    margin: 20px auto;
 }
 
-.cars-header {
+.detail-box {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 32px;
+}
+
+.detail-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.btn-primary {
-    background-color: #2563eb;
-    color: #ffffff;
-    padding: 0.6rem 1.2rem;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background-color 0.2s ease;
-}
-
-.btn-primary:hover {
-    background-color: #1d4ed8;
-}
-
-.cars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.car-card {
-    max-width: 100%;
-    padding: 1.5rem;
-}
-
-.car-price {
-    color: #2563eb;
-    font-weight: 700;
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
-}
-
-.car-specs {
-    color: #64748b;
-    font-size: 0.9rem;
-}
-
-.car-card-action {
-    margin-top: 1.2rem;
-}
-
-.link-detail {
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.empty-message {
-    text-align: center;
-    color: #64748b;
-    font-size: 1.1rem;
-    margin-top: 2rem;
-}
-
-/* 7. Car Detail & Actions */
-.detail-card {
-    max-width: 600px;
-}
-
-.subtitle {
-    color: #64748b;
-    margin-bottom: 1rem;
-}
-
-.specs-block {
-    border-top: 1px solid #e2e8f0;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
     border-bottom: 1px solid #e2e8f0;
-    padding: 1rem 0;
-    margin-bottom: 1.5rem;
 }
 
-.specs-block p {
-    margin-bottom: 0.5rem;
+.detail-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #1a202c;
+    margin-bottom: 6px;
 }
 
-.description-text {
-    margin-top: 0.8rem;
+.detail-year {
+    font-size: 14px;
+    color: #596780;
+}
+
+.detail-price-tag {
+    background-color: #eff6ff;
+    color: #3563e9;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.detail-price-tag span {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.detail-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.detail-spec-item {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 14px 18px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.spec-label {
+    font-size: 12px;
+    color: #90a3bf;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.spec-value {
+    font-size: 15px;
+    font-weight: bold;
+    color: #1a202c;
+    text-transform: capitalize;
+}
+
+.detail-description {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.detail-description h4 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #1a202c;
+}
+
+.detail-description p {
+    font-size: 14px;
+    color: #596780;
+    line-height: 1.6;
+}
+
+.detail-footer {
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
 }
 
 .action-buttons {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .btn-action {
     flex: 1;
     text-align: center;
+    padding: 10px;
+    border-radius: 6px;
     color: #ffffff;
-    padding: 0.6rem;
-    border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: bold;
 }
 
-.btn-edit {
-    background-color: #eab308;
+.btn-edit { background-color: #eab308; }
+.btn-delete { background-color: #ef4444; }
+
+.back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #3563e9;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-.btn-edit:hover {
-    background-color: #ca8a04;
+.back-link:hover {
+    text-decoration: underline;
 }
 
-.btn-delete {
-    background-color: #ef4444;
-}
-
-.btn-delete:hover {
-    background-color: #dc2626;
-}
-
-/* 8. Delete Confirmation Modal/Card */
+/* 8. წაშლის დადასტურების გვერდი */
 .delete-card {
     text-align: center;
 }
@@ -337,12 +532,188 @@ footer {
     color: #ef4444;
 }
 
-.confirm-text {
-    margin: 1.5rem 0;
-    font-size: 1.05rem;
-    color: #334155;
+.delete-warning-box {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
 }
 
-.mt-1 {
-    margin-top: 1rem;
+.delete-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #f1f5f9;
+    color: #475569;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.btn-cancel:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-delete-confirm {
+    flex: 1;
+    background-color: #ef4444;
+    color: #ffffff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-delete-confirm:hover {
+    background-color: #dc2626;
+}
+
+/* 9. ფუტერი */
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    padding: 20px;
+    color: #90a3bf;
+    font-size: 14px;
+}
+
+/* 10. პროფილის გვერდი (profile.html) */
+.profile-header-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-info h2 {
+    font-size: 24px;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.profile-username {
+    color: #3563e9;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.profile-meta {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+    color: #596780;
+}
+
+.user-badge:hover {
+    background-color: #e2e8f0;
+    color: #3563e9;
+}
+
+
+/* დაგულება */
+.heart-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #90a3bf;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1;
+    padding: 2px;
+}
+
+.heart-btn:hover {
+    color: #ed3f3f;
+}
+
+.heart-btn.liked {
+    color: #ed3f3f;
+}
+
+
+/* ფილტრაცია */
+.filter-panel {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 30px;
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #1a202c;
+    margin-bottom: 6px;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f8fafc;
+    color: #1a202c;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #3563e9;
+    background-color: #ffffff;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-reset {
+    background-color: #f1f5f9;
+    color: #596780;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-reset:hover {
+    background-color: #e2e8f0;
+    color: #1a202c;
 }

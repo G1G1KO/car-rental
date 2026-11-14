@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %}Register - Car Rental{% endblock title %}
+{% block title %}რეგისტრაცია - WeRent{% endblock title %}
 
 {% block content %}
 <div class="auth-card">
-    <h2>რეგისტრაცია (Register)</h2>
+    <div class="auth-header">
+        <h2>ანგარიშის შექმნა</h2>
+        <p class="auth-subtitle">შემოუერთდი WERENT-ს და იქირავე ან გააქირავე ავტომობილი</p>
+    </div>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">რეგისტრაცია</button>
-    </form>
+    {% include 'includes/form.html' with button_text="რეგისტრაცია" %}
 
-    <p class="switch-auth">უკვე გაქვს ანგარიში? <a href="{% url 'accounts:login' %}">გაიარე ავტორიზაცია</a></p>
+    <p class="switch-auth">უკვე გაქვს ანგარიში? <a href="{% url 'accounts:login' %}">შესვლა</a></p>
 </div>
 {% endblock content %}
