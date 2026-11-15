@@ -10,16 +10,46 @@
             <h2>{{ user.get_full_name|default:user.username }}</h2>
             <div class="profile-username">@{{ user.username }}</div>
             <div class="profile-meta">
-                <span>📧 {{ user.email|default:"ელ-ფოსტა არ არის მითითებული" }}</span>
-                <span>🚗 დაქირავებული: {{ rentals|length }}</span>
-                <span>📋 განცხადებები: {{ my_cars|length }}</span>
-                <span>♥ მოწონებული: {{ liked_cars|length }}</span>
+                <span><i data-lucide="mail" class="icon-sm"></i> {{ user.email|default:"ელ-ფოსტა არ არის მითითებული" }}</span>
+                <span><i data-lucide="bell" class="icon-sm"></i> შეტყობინებები: {{ unread_notifications_count }}</span>
+                <span><i data-lucide="car" class="icon-sm"></i> დაქირავებული: {{ rentals|length }}</span>
+                <span><i data-lucide="list" class="icon-sm"></i> განცხადებები: {{ my_cars|length }}</span>
+                <span><i data-lucide="heart" class="icon-sm"></i> მოწონებული: {{ liked_cars|length }}</span>
             </div>
         </div>
         <div>
             <a href="{% url 'cars:car-create' %}" class="btn-primary">+ მანქანის დამატება</a>
         </div>
     </div>
+
+    <section id="notifications" class="cars-section">
+        <div class="section-header">
+            <span class="section-title">შეტყობინებები ({{ notifications|length }})</span>
+        </div>
+
+        {% if notifications %}
+            <div class="notifications-list">
+                {% for notif in notifications %}
+                    <div class="notification-item unread">
+                        <div class="notification-content">
+                            <p class="notification-text">{{ notif.message }}</p>
+                            <span class="notification-time">{{ notif.created_at|date:"d M Y, H:i" }}</span>
+                        </div>
+
+                        <div class="notification-actions">
+                            <a href="{% url 'cars:car-detail' notif.car.pk %}" class="btn-reset">მანქანა</a>
+                            <form method="POST" action="{% url 'cars:notification-delete' notif.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-logout">წაშლა</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">ახალი შეტყობინებები არ გაქვთ.</p>
+        {% endif %}
+    </section>
 
     <section class="cars-section">
         <div class="section-header">
@@ -34,15 +64,23 @@
                             <div class="card-top">
                                 <div>
                                     <div class="card-brand">{{ rental.car.brand }}</div>
-                                    <div class="card-subtitle">{{ rental.car.model }} / {{ rental.car.year }} • 📍 {{ rental.car.get_city_display }}</div>
+                                    <div class="card-subtitle">{{ rental.car.model }} / {{ rental.car.year }} <i data-lucide="map-pin" class="icon-sm"></i> {{ rental.car.get_city_display }}</div>
                                 </div>
                             </div>
 
+                            <div class="card-image-box">
+                                {% if rental.car.image_01 %}
+                                    <img src="{{ rental.car.image_01.url }}" alt="{{ rental.car.brand }} {{ rental.car.model }}">
+                                {% else %}
+                                    <div class="no-image-placeholder">ფოტო არ არის</div>
+                                {% endif %}
+                            </div>
+
                             <div class="card-specs" style="flex-direction: column; gap: 6px;">
-                                <span>⏳ ხანგრძლივობა: <strong>{{ rental.days }} დღე</strong></span>
-                                <span>📅 დაწყება: <strong>{{ rental.start_date|date:"d M Y, H:i" }}</strong></span>
-                                <span>🏁 დასრულება: <strong>{{ rental.end_date|date:"d M Y, H:i" }}</strong></span>
-                                <span>⏱ დარჩენილია: <strong>{{ rental.end_date|timeuntil }}</strong></span>
+                                <span><i data-lucide="clock" class="icon-sm"></i> ხანგრძლივობა: <strong>{{ rental.days }} დღე</strong></span>
+                                <span><i data-lucide="calendar" class="icon-sm"></i> დაწყება: <strong>{{ rental.start_date|date:"d M Y, H:i" }}</strong></span>
+                                <span><i data-lucide="calendar-check" class="icon-sm"></i> დასრულება: <strong>{{ rental.end_date|date:"d M Y, H:i" }}</strong></span>
+                                <span><i data-lucide="hourglass" class="icon-sm"></i> დარჩენილია: <strong>{{ rental.end_date|timeuntil }}</strong></span>
                             </div>
                         </div>
 
@@ -73,17 +111,27 @@
                             <div class="card-top">
                                 <div>
                                     <div class="card-brand">{{ car.brand }}</div>
-                                    <div class="card-subtitle">{{ car.model }} / {{ car.year }} • 📍 {{ car.get_city_display }}</div>
+                                    <div class="card-subtitle">{{ car.model }} / {{ car.year }} <i data-lucide="map-pin" class="icon-sm"></i> {{ car.get_city_display }}</div>
                                 </div>
-                                <span class="card-subtitle">
-                                    {% if car.is_available %}✅ თავისუფალია{% else %}⛔ გაქირავებულია{% endif %}
-                                </span>
+                                {% if car.is_available %}
+                                    <span class="status-badge status-available">თავისუფალია</span>
+                                {% else %}
+                                    <span class="status-badge status-rented">გაქირავებულია</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="card-image-box">
+                                {% if car.image_01 %}
+                                    <img src="{{ car.image_01.url }}" alt="{{ car.brand }} {{ car.model }}">
+                                {% else %}
+                                    <div class="no-image-placeholder">ფოტო არ არის</div>
+                                {% endif %}
                             </div>
 
                             <div class="card-specs">
-                                <span>⛽ {{ car.get_fuel_type_display }}</span>
-                                <span>⚙️ {{ car.get_transmission_display }}</span>
-                                <span>🚪 {{ car.doors }}</span>
+                                <span><i data-lucide="fuel" class="icon-sm"></i> {{ car.get_fuel_type_display }}</span>
+                                <span><i data-lucide="settings-2" class="icon-sm"></i> {{ car.get_transmission_display }}</span>
+                                <span><i data-lucide="door-open" class="icon-sm"></i> {{ car.doors }}</span>
                             </div>
                         </div>
 
@@ -114,18 +162,26 @@
                             <div class="card-top">
                                 <div>
                                     <div class="card-brand">{{ car.brand }}</div>
-                                    <div class="card-subtitle">{{ car.model }} / {{ car.year }} • 📍 {{ car.get_city_display }}</div>
+                                    <div class="card-subtitle">{{ car.model }} / {{ car.year }} <i data-lucide="map-pin" class="icon-sm"></i> {{ car.get_city_display }}</div>
                                 </div>
                                 <form method="POST" action="{% url 'cars:car-like' car.pk %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="heart-btn liked" title="მოწონების გაუქმება">♥</button>
+                                    <button type="submit" class="heart-btn liked" title="მოწონების გაუქმება"><i data-lucide="heart" class="icon"></i></button>
                                 </form>
                             </div>
 
+                            <div class="card-image-box">
+                                {% if car.image_01 %}
+                                    <img src="{{ car.image_01.url }}" alt="{{ car.brand }} {{ car.model }}">
+                                {% else %}
+                                    <div class="no-image-placeholder">ფოტო არ არის</div>
+                                {% endif %}
+                            </div>
+
                             <div class="card-specs">
-                                <span>⛽ {{ car.get_fuel_type_display }}</span>
-                                <span>⚙️ {{ car.get_transmission_display }}</span>
-                                <span>🚪 {{ car.doors }}</span>
+                                <span><i data-lucide="fuel" class="icon-sm"></i> {{ car.get_fuel_type_display }}</span>
+                                <span><i data-lucide="settings-2" class="icon-sm"></i> {{ car.get_transmission_display }}</span>
+                                <span><i data-lucide="door-open" class="icon-sm"></i> {{ car.doors }}</span>
                             </div>
                         </div>
 

@@ -9,7 +9,7 @@
         <div class="detail-header">
             <div>
                 <h1 class="detail-title">{{ car.brand }} {{ car.model }}</h1>
-                <p class="detail-year">{{ car.year }} წელი • 📍 {{ car.get_city_display }} • მფლობელი: {{ car.owner.username }}</p>
+                <p class="detail-year">{{ car.year }} წელი • <i data-lucide="map-pin" class="icon-sm"></i> {{ car.get_city_display }} • მფლობელი: {{ car.owner.username }}</p>
             </div>
 
             <div style="display: flex; align-items: center; gap: 14px;">
@@ -21,37 +21,59 @@
                     <form method="POST" action="{% url 'cars:car-like' car.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">
-                            ♥ {{ car.likes.count }}
+                            <i data-lucide="heart" class="icon"></i> {{ car.likes.count }}
                         </button>
                     </form>
                 {% else %}
                     <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">
-                        ♥ {{ car.likes.count }}
+                        <i data-lucide="heart" class="icon"></i> {{ car.likes.count }}
                     </a>
                 {% endif %}
             </div>
         </div>
 
+        {% if car.image_01 or car.image_02 or car.image_03 %}
+            <div class="detail-gallery">
+                {% if car.image_01 %}
+                    <div class="gallery-main">
+                        <img src="{{ car.image_01.url }}" alt="{{ car.brand }} {{ car.model }} - 1">
+                    </div>
+                {% endif %}
+                <div class="gallery-thumbs">
+                    {% if car.image_02 %}
+                        <div class="gallery-thumb">
+                            <img src="{{ car.image_02.url }}" alt="{{ car.brand }} {{ car.model }} - 2">
+                        </div>
+                    {% endif %}
+                    {% if car.image_03 %}
+                        <div class="gallery-thumb">
+                            <img src="{{ car.image_03.url }}" alt="{{ car.brand }} {{ car.model }} - 3">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
         <div class="detail-specs-grid">
             <div class="detail-spec-item">
                 <span class="spec-label">საწვავი</span>
-                <span class="spec-value">⛽ {{ car.get_fuel_type_display }}</span>
+                <span class="spec-value"><i data-lucide="fuel" class="icon-sm"></i> {{ car.get_fuel_type_display }}</span>
             </div>
             <div class="detail-spec-item">
                 <span class="spec-label">გადაცემათა კოლოფი</span>
-                <span class="spec-value">⚙️ {{ car.get_transmission_display }}</span>
+                <span class="spec-value"><i data-lucide="settings-2" class="icon-sm"></i> {{ car.get_transmission_display }}</span>
             </div>
             <div class="detail-spec-item">
                 <span class="spec-label">კარების რაოდენობა</span>
-                <span class="spec-value">🚪 {{ car.doors }} კარი</span>
+                <span class="spec-value"><i data-lucide="door-open" class="icon-sm"></i> {{ car.doors }} კარი</span>
             </div>
             <div class="detail-spec-item">
                 <span class="spec-label">სტატუსი</span>
                 <span class="spec-value">
                     {% if car.is_available %}
-                        ✅ თავისუფალია
+                        <span class="status-badge status-available">თავისუფალია</span>
                     {% else %}
-                        ⛔ დაკავებულია
+                        <span class="status-badge status-rented">გაქირავებულია</span>
                     {% endif %}
                 </span>
             </div>

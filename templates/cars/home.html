@@ -40,22 +40,30 @@
                         <div class="card-top">
                             <div>
                                 <div class="card-brand">{{ car.brand }}</div>
-                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის 📍{{ car.get_city_display }}</div>
+                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის <i data-lucide="map-pin" class="icon-sm"></i>{{ car.get_city_display }}</div>
                             </div>
                             {% if user.is_authenticated %}
                                 <form method="POST" action="{% url 'cars:car-like' car.pk %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">♥</button>
+                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება"><i data-lucide="heart" class="icon"></i></button>
                                 </form>
                             {% else %}
-                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">♥</a>
+                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში"><i data-lucide="heart" class="icon"></i></a>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-image-box">
+                            {% if car.image_01 %}
+                                <img src="{{ car.image_01.url }}" alt="{{ car.brand }} {{ car.model }}">
+                            {% else %}
+                                <div class="no-image-placeholder">ფოტო არ არის</div>
                             {% endif %}
                         </div>
 
                         <div class="card-specs">
-                            <span class="spec-item">⛽ {{ car.fuel_type }}</span>
-                            <span class="spec-item">⚙️ {{ car.transmission }}</span>
-                            <span class="spec-item">🚪 {{ car.doors }} კარი</span>
+                            <span class="spec-item"><i data-lucide="fuel" class="icon-sm"></i> {{ car.fuel_type }}</span>
+                            <span class="spec-item"><i data-lucide="settings-2" class="icon-sm"></i> {{ car.transmission }}</span>
+                            <span class="spec-item"><i data-lucide="door-open" class="icon-sm"></i> {{ car.doors }} კარი</span>
                         </div>
 
                         <div class="card-bottom">
@@ -83,22 +91,30 @@
                         <div class="card-top">
                             <div>
                                 <div class="card-brand">{{ car.brand }}</div>
-                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის 📍{{ car.get_city_display }}</div>
+                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის <i data-lucide="map-pin" class="icon-sm"></i>{{ car.get_city_display }}</div>
                             </div>
                             {% if user.is_authenticated %}
                                 <form method="POST" action="{% url 'cars:car-like' car.pk %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">♥</button>
+                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება"><i data-lucide="heart" class="icon"></i></button>
                                 </form>
                             {% else %}
-                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">♥</a>
+                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში"><i data-lucide="heart" class="icon"></i></a>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-image-box">
+                            {% if car.image_01 %}
+                                <img src="{{ car.image_01.url }}" alt="{{ car.brand }} {{ car.model }}">
+                            {% else %}
+                                <div class="no-image-placeholder">ფოტო არ არის</div>
                             {% endif %}
                         </div>
 
                         <div class="card-specs">
-                            <span class="spec-item">⛽ {{ car.fuel_type }}</span>
-                            <span class="spec-item">⚙️ {{ car.transmission }}</span>
-                            <span class="spec-item">🚪 {{ car.doors }} კარი</span>
+                            <span class="spec-item"><i data-lucide="fuel" class="icon-sm"></i> {{ car.fuel_type }}</span>
+                            <span class="spec-item"><i data-lucide="settings-2" class="icon-sm"></i> {{ car.transmission }}</span>
+                            <span class="spec-item"><i data-lucide="door-open" class="icon-sm"></i> {{ car.doors }} კარი</span>
                         </div>
 
                         <div class="card-bottom">

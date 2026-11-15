@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
 
-from .models import Car, Rental
+from .models import Car, Rental, Notification
 
 
 class RentCar(LoginRequiredMixin, View):
@@ -15,6 +15,7 @@ class RentCar(LoginRequiredMixin, View):
 
         if not car.is_available or car.owner == request.user:
             return redirect('cars:car-detail', pk=car.pk)
+        
         try:
             days = int(request.POST.get('days', 1))
         except (ValueError, TypeError):
@@ -33,6 +34,21 @@ class RentCar(LoginRequiredMixin, View):
         )
         car.is_available = False
         car.save()
+
+        Notification.objects.create(
+            recipient=car.owner,
+            sender=request.user,
+            car=car,
+            message=f"მომხმარებელმა @{request.user.username} იქირავა თქვენი {car.brand} {car.model} ({days} დღით) (ჯამი: {total_price} ₾)."
+        )
+
+        return redirect('accounts:profile')
+
+
+class DeleteNotificationView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        notification = get_object_or_404(Notification, pk=pk, recipient=request.user)
+        notification.delete()
         return redirect('accounts:profile')
 
 
@@ -102,6 +118,11 @@ class CarList(ListView):
         context['city_choices'] = Car.CITY_CHOICES
         context['fuel_choices'] = Car.FUEL_CHOICES
         context['transmission_choices'] = Car.TRANSMISSION_CHOICES
+
+        query_params = self.request.GET.copy()
+        query_params.pop('page', None)
+        context['query_params'] = query_params.urlencode()
+
         return context
 
 
@@ -113,7 +134,7 @@ class CarDetail(DetailView):
 
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Car
-    fields = ['brand', 'model', 'year', 'city', 'price_per_day', 'doors', 'transmission', 'fuel_type', 'description']
+    fields = ['brand', 'model', 'year', 'city', 'price_per_day', 'doors', 'transmission', 'fuel_type', 'image_01', 'image_02', 'image_03', 'description']
     template_name = 'cars/create_car.html'
     success_url = reverse_lazy('cars:list-cars')
 
@@ -125,7 +146,7 @@ class CarCreate(LoginRequiredMixin, CreateView):
 class CarUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Car
     template_name = 'cars/update_car.html'
-    fields = ['brand', 'model', 'year', 'city', 'price_per_day', 'doors', 'transmission', 'fuel_type', 'description']
+    fields = ['brand', 'model', 'year', 'city', 'price_per_day', 'doors', 'transmission', 'fuel_type', 'image_01', 'image_02', 'image_03', 'description']
     success_url = reverse_lazy('cars:list-cars')
 
     def test_func(self):

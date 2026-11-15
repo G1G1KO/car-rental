@@ -56,6 +56,11 @@ nav a:hover {
     font-size: 14px;
 }
 
+.user-badge:hover {
+    background-color: #e2e8f0;
+    color: #3563e9;
+}
+
 /* ღილაკები */
 .btn-primary {
     background-color: #3563e9;
@@ -618,18 +623,13 @@ footer {
 
 .profile-meta {
     display: flex;
+    flex-wrap: wrap;
     gap: 24px;
     font-size: 14px;
     color: #596780;
 }
 
-.user-badge:hover {
-    background-color: #e2e8f0;
-    color: #3563e9;
-}
-
-
-/* დაგულება */
+/* 11. დაგულება */
 .heart-btn {
     background: none;
     border: none;
@@ -649,8 +649,7 @@ footer {
     color: #ed3f3f;
 }
 
-
-/* ფილტრაცია */
+/* 12. ფილტრაცია */
 .filter-panel {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
@@ -716,4 +715,548 @@ footer {
 .btn-reset:hover {
     background-color: #e2e8f0;
     color: #1a202c;
+}
+
+/* 13. ფოტოები */
+.card-image-box {
+    width: 100%;
+    height: 170px;
+    margin: 14px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f6f7f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.no-image-placeholder {
+    color: #90a3bf;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.detail-gallery {
+    margin: 20px 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gallery-main {
+    width: 100%;
+    height: 360px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #f6f7f9;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-thumbs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.gallery-thumb {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f6f7f9;
+}
+
+.gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 14. შეტყობინებები (NOTIFICATIONS) */
+.notif-badge {
+    background-color: #3563e9;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 999px;
+    margin-left: 4px;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notification-item {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.notification-item.unread {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    border-left: 4px solid #3563e9;
+}
+
+.notification-text {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #90a3bf;
+}
+
+.notification-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.read-label {
+    font-size: 13px;
+    color: #90a3bf;
+    font-weight: 600;
+}
+
+/* 15. პაგინაცია (PAGINATION) */
+nav.pagination-bar {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.page-link {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #596780;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.page-link:hover:not(.disabled):not(.active) {
+    border-color: #3563e9;
+    color: #3563e9;
+    background-color: #eff6ff;
+}
+
+.page-link.active {
+    background-color: #3563e9;
+    border-color: #3563e9;
+    color: #ffffff;
+    cursor: default;
+}
+
+.page-link.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* 16. Lucide Vector Icons & Status Badges */
+.icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.icon-sm {
+    width: 14px;
+    height: 14px;
+    vertical-align: -2px;
+    flex-shrink: 0;
+}
+
+.user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.spec-item,
+.card-specs span,
+.profile-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.heart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.15s ease;
+}
+
+.heart-btn.liked svg {
+    fill: #ed3f3f;
+    color: #ed3f3f;
+}
+
+.status-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+}
+
+.status-available {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.status-rented {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* 17. Responsive layouts */
+@media (max-width: 992px) {
+    nav {
+        padding: 16px 24px;
+    }
+
+    .nav-left,
+    .nav-right {
+        gap: 12px;
+    }
+
+    .cars-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-panel .filter-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: end;
+    }
+
+    .filter-panel .filter-group {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .filter-panel .filter-group input,
+    .filter-panel .filter-group select {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .filter-panel .filter-actions {
+        grid-column: 1 / -1;
+    }
+
+    .card-specs {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px 14px;
+    }
+
+    .werent-card,
+    .card-top > div,
+    .card-specs span,
+    .card-bottom > * {
+        min-width: 0;
+    }
+
+    .detail-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .detail-header > div:last-child {
+        flex-wrap: wrap;
+    }
+
+    .detail-specs-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .detail-footer .filter-form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+    }
+
+    .detail-footer .filter-group {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .detail-footer .filter-form > .btn-primary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    main {
+        padding: 20px 16px;
+    }
+
+    .promo-grid {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+
+    .promo-card {
+        min-width: 0;
+        padding: 24px;
+    }
+
+    .section-header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .section-title {
+        min-width: 0;
+    }
+
+    .detail-wrapper {
+        margin: 8px auto;
+    }
+}
+
+@media (max-width: 640px) {
+    nav {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+
+    .nav-left {
+        flex: 0 0 auto;
+    }
+
+    .nav-right {
+        flex: 1 1 220px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .nav-right form {
+        margin: 0;
+    }
+
+    .user-badge {
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .notif-badge {
+        flex-shrink: 0;
+    }
+
+    main {
+        padding: 16px;
+    }
+
+    .filter-panel {
+        padding: 16px;
+    }
+
+    .filter-panel .filter-form {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .filter-panel .filter-actions {
+        display: flex;
+        width: 100%;
+    }
+
+    .filter-panel .filter-actions > * {
+        flex: 1 1 0;
+        min-width: 0;
+        text-align: center;
+    }
+
+    .filter-panel .filter-actions .btn-primary {
+        width: 100%;
+    }
+
+    .card-top {
+        gap: 10px;
+    }
+
+    .card-brand,
+    .card-subtitle,
+    .price-box {
+        overflow-wrap: anywhere;
+    }
+
+    .card-bottom {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .card-bottom .btn-primary {
+        flex-shrink: 0;
+    }
+
+    .profile-header-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .profile-info,
+    .profile-header-card > div:last-child {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .profile-header-card .profile-meta {
+        gap: 10px 16px;
+    }
+
+    .profile-meta span {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .notification-item {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px 16px;
+    }
+
+    .notification-content {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .notification-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .notification-actions form {
+        flex: 1 1 auto;
+    }
+
+    .notification-actions .btn-reset,
+    .notification-actions .btn-logout {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        margin: 8px auto;
+        padding: 20px;
+    }
+
+    .auth-card form input,
+    .auth-card form select,
+    .auth-card form textarea {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .detail-box {
+        padding: 20px;
+    }
+
+    .detail-title {
+        font-size: 22px;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-gallery,
+    .gallery-main,
+    .gallery-thumbs,
+    .gallery-thumb {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .gallery-main {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .gallery-thumbs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery-thumb {
+        height: clamp(100px, 28vw, 180px);
+    }
+
+    .detail-spec-item {
+        min-width: 0;
+    }
+
+    .spec-value {
+        overflow-wrap: anywhere;
+    }
+
+    .action-buttons,
+    .delete-actions {
+        flex-direction: column;
+    }
+
+    nav.pagination-bar {
+        gap: 6px;
+    }
+
+    .page-link {
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .cars-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }

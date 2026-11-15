@@ -6,7 +6,7 @@ from django.views.generic import FormView, TemplateView
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from cars.models import Car, Rental
+from cars.models import Car, Rental, Notification
 
 
 # Create your views here.
@@ -20,6 +20,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         context['my_cars'] = Car.objects.filter(owner=user).order_by('-created_at')
         context['liked_cars'] = Car.objects.filter(likes=user)
         context['rentals'] = Rental.objects.filter(renter=user, is_active=True).order_by('-start_date')
+        context['notifications'] = Notification.objects.filter(recipient=user)
         return context
 
 

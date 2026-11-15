@@ -58,7 +58,7 @@
 
     <section class="cars-section">
         <div class="section-header">
-            <span class="section-title">ნაპოვნია {{ cars|length }} ავტომობილი</span>
+            <span class="section-title">ნაპოვნია {{ paginator.count }} ავტომობილი</span>
             {% if user.is_authenticated %}
                 <a href="{% url 'cars:car-create' %}" class="btn-primary">+ მანქანის დამატება</a>
             {% endif %}
@@ -71,23 +71,31 @@
                         <div class="card-top">
                             <div>
                                 <div class="card-brand">{{ car.brand }}</div>
-                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის • 📍 {{ car.get_city_display }}</div>
+                                <div class="card-subtitle">{{ car.model }} / {{ car.year }} წლის • <i data-lucide="map-pin" class="icon-sm"></i> {{ car.get_city_display }}</div>
                             </div>
 
                             {% if user.is_authenticated %}
                                 <form method="POST" action="{% url 'cars:car-like' car.pk %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება">♥</button>
+                                    <button type="submit" class="heart-btn {% if user in car.likes.all %}liked{% endif %}" title="მოწონება"><i data-lucide="heart" class="icon"></i></button>
                                 </form>
                             {% else %}
-                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში">♥</a>
+                                <a href="{% url 'accounts:login' %}" class="heart-btn" title="შედით სისტემაში"><i data-lucide="heart" class="icon"></i></a>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-image-box">
+                            {% if car.image_01 %}
+                                <img src="{{ car.image_01.url }}" alt="{{ car.brand }} {{ car.model }}">
+                            {% else %}
+                                <div class="no-image-placeholder">ფოტო არ არის</div>
                             {% endif %}
                         </div>
 
                         <div class="card-specs">
-                            <span class="spec-item">⛽ {{ car.get_fuel_type_display }}</span>
-                            <span class="spec-item">⚙️ {{ car.get_transmission_display }}</span>
-                            <span class="spec-item">🚪 {{ car.doors }} კარი</span>
+                            <span class="spec-item"><i data-lucide="fuel" class="icon-sm"></i> {{ car.get_fuel_type_display }}</span>
+                            <span class="spec-item"><i data-lucide="settings-2" class="icon-sm"></i> {{ car.get_transmission_display }}</span>
+                            <span class="spec-item"><i data-lucide="door-open" class="icon-sm"></i> {{ car.doors }} კარი</span>
                         </div>
 
                         <div class="card-bottom">
@@ -97,6 +105,31 @@
                     </div>
                 {% endfor %}
             </div>
+
+            {% if is_paginated %}
+                <nav class="pagination-bar" aria-label="გვერდების ნავიგაცია">
+                    {% if page_obj.has_previous %}
+                        <a href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.previous_page_number }}" class="page-link">← წინა</a>
+                    {% else %}
+                        <span class="page-link disabled">← წინა</span>
+                    {% endif %}
+
+                    {% for num in paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="page-link active">{{ num }}</span>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ num }}" class="page-link">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.next_page_number }}" class="page-link">შემდეგი →</a>
+                    {% else %}
+                        <span class="page-link disabled">შემდეგი →</span>
+                    {% endif %}
+                </nav>
+            {% endif %}
+
         {% else %}
             <p class="empty-message">მოცემული პარამეტრებით ავტომობილი ვერ მოიძებნა.</p>
         {% endif %}

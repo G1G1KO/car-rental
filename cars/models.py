@@ -37,6 +37,9 @@ class Car(models.Model):
     transmission = models.CharField(max_length=20, choices=TRANSMISSION_CHOICES, default='automatic')
     fuel_type = models.CharField(max_length=20, choices=FUEL_CHOICES, default='gasoline')
     description = models.TextField(blank=True, null=True)
+    image_01 = models.ImageField(upload_to='car/images', null=True)
+    image_02 = models.ImageField(upload_to='car/images', null=True)
+    image_03     = models.ImageField(upload_to='car/images', null=True)
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     city = models.CharField(
@@ -67,3 +70,18 @@ class Rental(models.Model):
 
     def __str__(self):
         return f"{self.car} - {self.renter.username} ({self.days} day)"
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_notifications')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='notifications')
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"To {self.recipient.username}: {self.message}"
