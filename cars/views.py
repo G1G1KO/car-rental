@@ -6,6 +6,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
 
+from .utils import release_expired_rentals
+ 
 from .models import Car, Rental, Notification
 
 
@@ -84,8 +86,10 @@ class CarList(ListView):
     template_name = 'cars/list_car.html'
     context_object_name = 'cars'
     ordering = ['-created_at']
+    paginate_by = 8
          
     def get_queryset(self):
+        release_expired_rentals()
         queryset =  super().get_queryset().filter(is_available=True)
 
         search_query = self.request.GET.get('search', '').strip()

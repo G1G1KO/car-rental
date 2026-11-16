@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.contrib import messages
 from django.shortcuts import redirect
+from cars.utils import release_expired_rentals
 
 from cars.models import Car, Rental, Notification
 
@@ -15,6 +16,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/profile.html'
 
     def get_context_data(self, **kwargs):
+        release_expired_rentals()
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['my_cars'] = Car.objects.filter(owner=user).order_by('-created_at')
