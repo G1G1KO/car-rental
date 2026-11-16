@@ -39,7 +39,7 @@ class Car(models.Model):
     description = models.TextField(blank=True, null=True)
     image_01 = models.ImageField(upload_to='car/images', null=True)
     image_02 = models.ImageField(upload_to='car/images', null=True)
-    image_03     = models.ImageField(upload_to='car/images', null=True)
+    image_03  = models.ImageField(upload_to='car/images', null=True)
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     city = models.CharField(
